@@ -10,7 +10,7 @@ namespace APP.Models
 
         public LotteryInfo()
         {
-            //Page where extract the datas
+            
             oweb = new HtmlWeb();
             doc = oweb.Load("https://loteriasdominicanas.com");
         }
@@ -30,6 +30,7 @@ namespace APP.Models
 
                 var informacion = new Data
                 {
+                    Id = i,
                     Sorteo = string.Join(", ", nombres),
                     Numeros = numeros,
                     Fecha = fecha
