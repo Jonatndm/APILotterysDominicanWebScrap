@@ -3,20 +3,24 @@ using ScrapySharp.Extensions;
 
 namespace APP.Models
 {
-    public class LotteryInfo
+    public class LoteriaInfo
     {
-        private HtmlWeb oweb;
-        private HtmlDocument doc;
+        
+        private readonly Lazy<HtmlDocument> Lazydoc;
 
-        public LotteryInfo()
+        public LoteriaInfo()
         {
+            Lazydoc = new Lazy<HtmlDocument>(() =>
+            {
+                var oweb = new HtmlWeb();
+                return oweb.Load("https://loteriasdominicanas.com");
+            });
             
-            oweb = new HtmlWeb();
-            doc = oweb.Load("https://loteriasdominicanas.com");
         }
-        public async Task<List<Data>> GetDataAsync()
+        private HtmlDocument doc => Lazydoc.Value;
+        public async Task<List<Loteria>> GetDataAsync()
         {
-            var informacionLoteria = new List<Data>();
+            var informacionLoteria = new List<Loteria>();
             var fechaContenedor = doc.DocumentNode.CssSelect("[class='session-date px-2']").Select(e => e.InnerText.Trim()).ToList();
             var nombresLoterias = doc.DocumentNode.CssSelect(".game-title");
             var numerosLoterias = doc.DocumentNode.CssSelect(".game-scores.p-2.ball-mode");
@@ -28,7 +32,7 @@ namespace APP.Models
                 var nombres = nombresLoterias.ElementAtOrDefault(i)?.CssSelect("span").Select(e => e.InnerHtml).ToList() ?? new List<string>();
                 var numeros = numerosLoterias.ElementAtOrDefault(i)?.CssSelect("span").Select(e => e.InnerHtml).ToList() ?? new List<string>();
 
-                var informacion = new Data
+                var informacion = new Loteria
                 {
                     Id = i,
                     Sorteo = string.Join(", ", nombres),

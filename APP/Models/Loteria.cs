@@ -1,6 +1,6 @@
 ﻿namespace APP.Models
 {
-    public class Data
+    public class Loteria
     {
         public int Id { get; set; }
         public string Sorteo { get; set; } = null!;

@@ -12,11 +12,11 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Lottery API", Version = "v1" });
 });
-builder.Services.AddSingleton<LotteryInfo>();
+builder.Services.AddSingleton<LoteriaInfo>();
 var app = builder.Build();
 
-
-app.MapGet("/resultados", async (LotteryInfo lottery) =>
+//End Points
+app.MapGet("/resultados", async (LoteriaInfo lottery) =>
 {
     var resultado = await lottery.GetDataAsync();
     return Results.Json(resultado);
@@ -24,10 +24,10 @@ app.MapGet("/resultados", async (LotteryInfo lottery) =>
 });
 
 
-app.MapGet("/resultados/{id:int}", async (LotteryInfo lottery, int Id) =>
+app.MapGet("/resultados/{id:int}", async (LoteriaInfo lottery, int Id) =>
 {
     var resultados = await lottery.GetDataAsync();
-    Data? resultado = resultados.FirstOrDefault(x => x.Id == Id);
+    Loteria? resultado = resultados.FirstOrDefault(x => x.Id == Id);
 
     if (resultado is null)
         return Results.NotFound();
