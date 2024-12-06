@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using APP.Utils;
+using HtmlAgilityPack;
 using ScrapySharp.Extensions;
 
 namespace APP.Models
@@ -45,5 +46,14 @@ namespace APP.Models
             return informacionLoteria;
 
         }
+        public async Task<List<Loteria>> GetPaginatetDataAsync(int pageNumber, int itemsPerPage)
+        {
+            var datos = await GetDataAsync();
+            var paginador = new Paginador<Loteria>();
+
+            return paginador.Paginar(datos, pageNumber, itemsPerPage);
+
+        }
+
     }
 }
